@@ -8,66 +8,124 @@
 </head>
 
 <body>
+
+    <div id="buttonChoice">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+
     <script>
         let computerChoice;
         let humanChoice;
         let humanScore = 0; computerScore = 0; hScore = 0; cScore = 0;
 
+        const div = document.createElement("div");
+        document.body.appendChild(div);
+
         function getComputerChoice() {
             let randomNum = Math.floor(Math.random() * 10);
+            const cp = document.createElement("p");
 
             if (randomNum <= 3) {
                 computerChoice = "rock";
                 console.log("Computer Choice is " + computerChoice);
+                cp.textContent = `Computer Choice is ${computerChoice}`;
             } else if (randomNum > 3 && randomNum <= 6) {
                 computerChoice = "paper";
                 console.log("Computer Choice is " + computerChoice);
+                cp.textContent = `Computer Choice is ${computerChoice}`;
             } else {
                 computerChoice = "scissors";
                 console.log("Computer Choice is " + computerChoice);
+                cp.textContent = `Computer Choice is ${computerChoice}`;
             }
 
+            div.appendChild(cp);
             return computerChoice;
         }
 
-        function getHumanChoice() {
-            humanChoice = prompt("Enter your choice out of these three: rock, paper, scissors");
-            humanChoice = humanChoice.toLowerCase();
+        function getHumanChoice(humanCh) {
+            // humanChoice = prompt("Enter your choice out of these three: rock, paper, scissors");
+            humanChoice = humanCh.toLowerCase();
             console.log("Human Choice is " + humanChoice);
-
+            const hp = document.createElement("p");
+            hp.textContent = `Human Choice is ${humanChoice}`;
+            div.appendChild(hp);
             return humanChoice;
         }
 
         function playRound(compChoice, humChoice) {
-            
-            if((compChoice === "rock" && humChoice === "rock") || (compChoice === "paper" && humChoice === "paper") || (compChoice === "scissors" && humChoice === "scissors")) {
+            const p = document.createElement("p");
+
+            if ((compChoice === "rock" && humChoice === "rock") || (compChoice === "paper" && humChoice === "paper") || (compChoice === "scissors" && humChoice === "scissors")) {
                 console.log("Nobody wins, it's a draw!");
+                p.textContent = "Nobody wins, it's a draw!";
                 computerScore = 0;
                 humanScore = 0;
-            } else if((compChoice === "rock" && humChoice === "scissors") || (compChoice === "paper" && humChoice === "rock") || (compChoice === "scissors" && humChoice === "paper")) {
+            } else if ((compChoice === "rock" && humChoice === "scissors") || (compChoice === "paper" && humChoice === "rock") || (compChoice === "scissors" && humChoice === "paper")) {
                 computerScore = 1;
                 humanScore = 0;
                 console.log(`You lose! ${compChoice} beats ${humChoice}`);
-            } else if((compChoice === "rock" && humChoice === "paper") || (compChoice === "paper" && humChoice === "scissors") || (compChoice === "scissors" && humChoice === "rock")) {
+                p.textContent = `You lose! ${compChoice} beats ${humChoice}`;
+            } else if ((compChoice === "rock" && humChoice === "paper") || (compChoice === "paper" && humChoice === "scissors") || (compChoice === "scissors" && humChoice === "rock")) {
                 humanScore = 1;
                 computerScore = 0;
                 console.log(`You win! ${humChoice} beats ${compChoice}`);
+                p.textContent = `You win! ${humChoice} beats ${compChoice}`;
             }
+
+            div.appendChild(p);
 
         }
 
+        // REPEAT THIS FUNCTION 5 TIMES
         function playGame() {
-            for (let i=1; i<=5; i++){
-                getHumanChoice();
-                getComputerChoice();
-                playRound(computerChoice, humanChoice);
-                cScore = cScore + computerScore;
-                hScore = hScore + humanScore;
-                console.log("Computer Score is " + cScore + " and Your score is " + hScore);
-            }
+            
+            
+            const p = document.createElement("p");
+            
+            const buttonChoice = document.querySelectorAll("button");
+            buttonChoice.forEach((button) => {
+                button.addEventListener("click", () => {
+                    const theHumanChoice = button.id;
+                    getHumanChoice(theHumanChoice);
+                    getComputerChoice();
+                    playRound(computerChoice, humanChoice);
+                    cScore = cScore + computerScore;
+                    hScore = hScore + humanScore;
+                    console.log("Computer Score is " + cScore + " and Your score is " + hScore);
+                    p.textContent = `Computer Score is ${cScore} and Your score is ${hScore}`;
+                    div.appendChild(p);
+
+                    if(cScore == 5){
+                        console.log("Computer is the final winner!");
+                        const p = document.createElement("p");
+                        p.textContent = "Computer is the final winner!";
+                        div.appendChild(p);
+                    }   else if(hScore == 5){
+                        console.log("You are the final winner!");
+                        const p = document.createElement("p");
+                        p.textContent = "You are the final winner!";
+                        div.appendChild(p);
+
+                    }
+                   
+                })
+            })
         }
 
         playGame();
+
+
+        // RUN THIS FUNCTION ONLY ONCE
+        // getHumanChoice();
+        // getComputerChoice();
+        // playRound(computerChoice, humanChoice);
+
+        // Creating UI for the game
+
+
 
     </script>
 </body>
